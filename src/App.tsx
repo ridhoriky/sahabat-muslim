@@ -91,14 +91,14 @@ function App() {
             <Select listCity={listCity} handleChange={handleChange} />
           </div>
           <div className='overflow-x-auto w-full '>
-            <p className='text-center'>{time}</p>
             <p className='text-center'>{dateNow}</p>
+            <p className='text-center'>{time}</p>
             <p className='ml-4 text-center my-2'>
               {titleCase(scheduleToday?.lokasi)},{' '}
               {titleCase(scheduleToday?.daerah)}
             </p>
 
-            <table className='table table-zebra'>
+            <table className='table table-zebra table-sm'>
               <tbody>
                 <tr>
                   <th>Subuh</th>

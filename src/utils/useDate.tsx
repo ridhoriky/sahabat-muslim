@@ -19,14 +19,13 @@ export const useDate = () => {
   let date = today.getDate();
   let month = today.getMonth() + 1;
   let year = today.getFullYear();
-  let hours = today.getHours();
-  let minutes = today.getMinutes();
-  let seconds = today.getSeconds();
-  let formatHours = hours < 10 ? `0${hours}` : hours;
-  let fromatMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  let fromatSeconds = seconds < 10 ? `0${seconds}` : seconds;
+  let hours = today.getHours() < 10 ? `0${today.getHours()}` : today.getHours();
+  let minutes =
+    today.getMinutes() < 10 ? `0${today.getMinutes()}` : today.getMinutes();
+  let seconds =
+    today.getSeconds() < 10 ? `0${today.getSeconds()}` : today.getSeconds();
 
-  const time = `${formatHours}:${fromatMinutes}:${fromatSeconds}`;
+  const time = `${hours}:${minutes}:${seconds}`;
 
   return {
     date,
