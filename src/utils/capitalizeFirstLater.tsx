@@ -1,9 +1,19 @@
 function titleCase(str: string | undefined = 'undefined') {
-  var splitStr = str.toLowerCase().split(' ');
-  for (var i = 0; i < splitStr.length; i++) {
+  if (str === undefined) return '';
+
+  let splitStr = str.split(' ');
+
+  for (let i = 0; i < splitStr.length; i++) {
+    let word = splitStr[i];
+
+    if (word.split('.').length - 1 === 2) {
+      continue;
+    }
+
     splitStr[i] =
-      splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+      word.charAt(0).toUpperCase() + word.substring(1).toLowerCase();
   }
+
   return splitStr.join(' ');
 }
 

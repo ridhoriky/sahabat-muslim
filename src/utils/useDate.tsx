@@ -22,10 +22,11 @@ export const useDate = () => {
   let hours = today.getHours();
   let minutes = today.getMinutes();
   let seconds = today.getSeconds();
+  let formatHours = hours < 10 ? `0${hours}` : hours;
+  let fromatMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  let fromatSeconds = seconds < 10 ? `0${seconds}` : seconds;
 
-  const time = `${hours}:${minutes < 10 ? `0${minutes}` : minutes}:${
-    seconds < 10 ? `0${seconds}` : seconds
-  }`;
+  const time = `${formatHours}:${fromatMinutes}:${fromatSeconds}`;
 
   return {
     date,

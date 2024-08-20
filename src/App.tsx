@@ -145,8 +145,8 @@ function App() {
               </tr>
             </thead>
             <tbody>
-              {scheduleMonth?.jadwal?.map((item: Item, id: number) => (
-                <tr key={id}>
+              {scheduleMonth?.jadwal?.map((item: Item) => (
+                <tr key={item.date}>
                   <td>{item.tanggal}</td>
                   <td>{item.imsak}</td>
                   <td>{item.subuh}</td>
