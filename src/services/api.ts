@@ -27,3 +27,11 @@ export const getScheduleMonth = async (
   );
   return response.data;
 };
+export const getAsmaulHusna = async () => {
+  const response = await axiosInstance.get(`husna/semua`);
+  return response.data;
+};
+export const getAllSurat = async () => {
+  const response = await axiosInstance.get(`quran/surat/semua`);
+  return response.data;
+};

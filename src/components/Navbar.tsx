@@ -1,53 +1,112 @@
-import { FaRegCalendarMinus } from 'react-icons/fa';
+import { Menu } from 'antd';
+import { Link } from 'react-router-dom';
+import type { MenuProps } from 'antd';
 
-const Navbar = () => {
+type MenuItem = Required<MenuProps>['items'][number];
+
+const items: MenuItem[] = [
+  {
+    key: '/',
+    label: (
+      <Link to={'/'} rel='noopener noreferrer'>
+        Sahabat Muslim
+      </Link>
+    ),
+  },
+  {
+    key: '/quran',
+    label: (
+      <Link to={'/quran'} rel='noopener noreferrer'>
+        Quran
+      </Link>
+    ),
+  },
+  {
+    key: '/jadwal',
+    label: (
+      <Link to={'/jadwal'} rel='noopener noreferrer'>
+        Jadwal Sholat
+      </Link>
+    ),
+  },
+  {
+    key: '/kalender',
+    label: (
+      <Link to={'/kalender'} rel='noopener noreferrer'>
+        Kalender
+      </Link>
+    ),
+  },
+  {
+    key: '/asmaul-husna',
+    label: (
+      <Link to={'/asmaul-husna'} rel='noopener noreferrer'>
+        Asmaul Husna
+      </Link>
+    ),
+  },
+
+  // {
+  //   label: 'Navigation Three - Submenu',
+  //   key: 'SubMenu',
+  //   icon: <SettingOutlined />,
+  //   children: [
+  //     {
+  //       type: 'group',
+  //       label: 'Item 1',
+  //       children: [
+  //         { label: 'Option 1', key: 'setting:1' },
+  //         { label: 'Option 2', key: 'setting:2' },
+  //       ],
+  //     },
+  //     {
+  //       type: 'group',
+  //       label: 'Item 2',
+  //       children: [
+  //         { label: 'Option 3', key: 'setting:3' },
+  //         { label: 'Option 4', key: 'setting:4' },
+  //       ],
+  //     },
+  //   ],
+  // },
+];
+
+type Props = {
+  location: string;
+};
+
+const Navbar = (props: Props) => {
   return (
-    <div className='navbar bg-base-100 px-[10%]'>
-      <div className='flex-1'>
-        <p className='btn btn-ghost text-xl'>Jadwal Sholat</p>
-      </div>
-      <div className='flex-none'>
-        <div className='dropdown dropdown-end'>
-          <div className='btn btn-ghost btn-circle'>
-            <div className='indicator'>
-              <FaRegCalendarMinus size={24} />
-              <span className='badge badge-sm indicator-item'>8</span>
-            </div>
-          </div>
-          <div className='card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow'>
-            <div className='card-body'>
-              <span className='text-lg font-bold'>8 Items</span>
-              <span className='text-info'>Subtotal: $999</span>
-              <div className='card-actions'>
-                <button className='btn btn-primary btn-block'>View cart</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className='dropdown dropdown-end'>
-          <div className='btn btn-ghost btn-circle avatar'>
-            <div className='w-7 rounded-full'>
-              <img
-                alt='Tailwind CSS Navbar component'
-                src='https://cdn-icons-png.flaticon.com/128/1077/1077114.png'
-              />
-            </div>
-          </div>
-          <ul className='menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow'>
-            <li>
-              <div className='justify-between'>
-                <span className='badge'>New</span>
-              </div>
-            </li>
-            <li>
-              <p>Settings</p>
-            </li>
-            <li>
-              <p>Logout</p>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <div
+      style={{
+        padding: '0 10%',
+        width: '100%',
+        backgroundColor: '#FFF5C9 ',
+      }}
+    >
+      <Menu
+        mode='horizontal'
+        style={{
+          backgroundColor: '#FFF5C9',
+        }}
+        defaultSelectedKeys={[props.location]}
+        items={items}
+      >
+        {/* <div style={{ margin: '0 auto' }}>
+          <Menu.Item key='beranda'>
+            <Link to={'/'}>Quran</Link>
+          </Menu.Item>
+          <Menu.Item key='jadwal'>
+            <Link to={'/jadwal'}>Jadwal</Link>
+          </Menu.Item>
+          <Menu.Item key='kalender'>
+            <Link to={'/kalender'}>Kalender</Link>
+          </Menu.Item>
+          <Menu.Item key='asmaul-husna'>
+            <Link to={'/asmaul-husna'}>Asmaul Husna</Link>
+          </Menu.Item>
+        </div> */}
+      </Menu>
     </div>
   );
 };
