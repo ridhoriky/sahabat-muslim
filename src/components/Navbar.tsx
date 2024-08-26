@@ -74,19 +74,35 @@ const Navbar = () => {
                   } text-4xl text-darkBrown`}
                 />
               </div>
-              <ul className=' lg:hidden flex flex-col items-start z-[100] shadow-sm shadow-darkBrown justify-center absolute right-0 p-[20px] mr-[10%] mt-[50px] rounded-md bg-white w-fit  '>
-                {navLinks.map((item) => (
-                  <li key={item.label}>
-                    <Link
-                      onClick={() => setIsMenuOpen(!isMenuOpen)}
-                      to={item.to}
-                      className=' text-darkBrown leading-normal hover:text-darkBrown hover:border-b-darkBrown hover:border-b-2'
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <div className=' lg:hidden flex flex-col justify-start items-start z-[100] shadow-sm shadow-darkBrown  absolute right-0 p-[20px] mr-[10%] mt-[50px] rounded-md bg-white w-fit  '>
+                <ul className='flex flex-col justify-start items-start gap-2 pr-10'>
+                  {navLinks.map((item) => (
+                    <li key={item.label}>
+                      <Link
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                        to={item.to}
+                        className=' text-darkBrown leading-normal hover:text-darkBrown hover:border-b-darkBrown hover:border-b-2'
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <div className='mt-2 flex gap-2 text-lg pr-10 leading-normal font-medium justify-start items-start flex-col wide:mr-24 text-darkBrown'>
+                  <Link to='/login' onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    <button className='btn text-white btn-sm bg-darkBrown hover:bg-darkBrown hover:scale-110'>
+                      Masuk
+                    </button>
+                  </Link>
+                  <Link
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    to='/register'
+                    className='text-darkBrown  hover:text-darkBrown hover:border-b-darkBrown hover:border-b-2'
+                  >
+                    Daftar
+                  </Link>
+                </div>
+              </div>
             </nav>
           </div>
         )}

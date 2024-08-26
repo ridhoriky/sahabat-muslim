@@ -1,10 +1,11 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
-import Kalender from './pages/Kalender';
-import AsmaulHusna from './pages/AsmaulHusna';
 import Jadwal from './pages/Jadwal';
 import Home from './pages/Home';
 import Quran from './pages/Quran';
+import Ayat from './pages/Ayat';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -12,10 +13,13 @@ function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path='/quran' element={<Quran />} />
+          <Route path='/quran' element={<Outlet />}>
+            <Route index element={<Quran />} />
+            <Route path={':surat'} element={<Ayat />} />
+          </Route>
           <Route path='/jadwal' element={<Jadwal />} />
-          <Route path='/kalender' element={<Kalender />} />
-          <Route path='/asmaul-husna' element={<AsmaulHusna />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/register' element={<Register />} />
         </Route>
       </Routes>
     </BrowserRouter>

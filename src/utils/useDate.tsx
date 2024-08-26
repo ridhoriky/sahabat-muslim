@@ -26,6 +26,7 @@ export const useDate = () => {
     today.getSeconds() < 10 ? `0${today.getSeconds()}` : today.getSeconds();
 
   const time = `${hours}:${minutes}:${seconds}`;
+  const timeWithoutSeconds = `${hours}:${minutes}`;
 
   return {
     date,
@@ -33,5 +34,6 @@ export const useDate = () => {
     month,
     year,
     time,
+    timeWithoutSeconds,
   };
 };

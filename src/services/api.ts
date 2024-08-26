@@ -35,3 +35,17 @@ export const getAllSurat = async () => {
   const response = await axiosInstance.get(`quran/surat/semua`);
   return response.data;
 };
+export const getSuratWithNumber = async (id: string | number | undefined) => {
+  const response = await axiosInstance.get(`quran/surat/${id}`);
+  return response.data;
+};
+export const getSuratWithRange = async (
+  surat: string | undefined,
+  awal: number,
+  akhir: number
+) => {
+  const response = await axiosInstance.get(
+    `quran/ayat/${surat}/${awal}-${akhir}`
+  );
+  return response.data;
+};

@@ -9,7 +9,7 @@ const AsmaulHusna = () => {
   }, []);
 
   return (
-    <div className='px-[10%]'>
+    <div className='px-[10%] pt-11'>
       <TableHusna data={listAsmaulHusna} id='id' />
     </div>
   );

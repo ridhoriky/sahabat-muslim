@@ -1,5 +1,6 @@
 import { Table } from 'antd';
 import type { TableProps } from 'antd';
+import React from 'react';
 
 interface DataType {
   key: string;
@@ -42,8 +43,15 @@ const columns: TableProps<DataType>['columns'] = [
   },
 ];
 type Props = { data: undefined | DataType[]; id: string };
-const TableSchedule = (props: Props) => {
+const TableSchedule = React.memo((props: Props) => {
   const { data, id } = props;
-  return <Table columns={columns} dataSource={data} rowKey={id} />;
-};
+  return (
+    <Table
+      columns={columns}
+      className='bg-light'
+      dataSource={data}
+      rowKey={id}
+    />
+  );
+});
 export default TableSchedule;

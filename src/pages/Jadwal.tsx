@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDate } from '../utils/useDate';
 import {
   getListCity,
@@ -43,40 +43,94 @@ function Jadwal() {
   });
 
   const [scheduleMonth, setScheduleMonth] = useState<any>(null);
-  const [city, setCity] = useState('1501');
+  const [selectedCity, setSelectedCity] = useState('');
 
-  const { dateNow, date, month, year, time } = useDate();
+  const { dateNow, date, month, year, time, timeWithoutSeconds } = useDate();
 
   const dateParm = `${year}-${month}-${date}`;
 
   useEffect(() => {
-    getListCity().then((response) => setListCity(response.data));
+    const fetchData = async () => {
+      try {
+        const citiesResponse = await getListCity();
+        setListCity(citiesResponse.data);
+        setSelectedCity(citiesResponse.data[89].id);
+      } catch (error) {
+        console.error('Failed to fetch cities:', error);
+      }
+    };
+
+    fetchData();
   }, []);
   useEffect(() => {
-    getScheduleMonth(city, schedule.year, schedule.month).then((response) =>
-      setScheduleMonth(response.data)
-    );
-    getScheduleToday(city, dateParm).then((response) =>
-      setScheduleToday(response.data)
-    );
-  }, [city]);
+    const fetchSchedules = async () => {
+      try {
+        const monthScheduleResponse = await getScheduleMonth(
+          selectedCity,
+          schedule.year,
+          schedule.month
+        );
+        setScheduleMonth(monthScheduleResponse.data);
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCity(e.target.value);
-  };
+        const todayScheduleResponse = await getScheduleToday(
+          selectedCity,
+          dateParm
+        );
+        setScheduleToday(todayScheduleResponse.data);
+      } catch (error) {
+        console.error('Failed to fetch schedules:', error);
+      }
+    };
+
+    fetchSchedules();
+  }, [selectedCity, schedule.month, schedule.year, dateParm]);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setSelectedCity(e.target.value);
+    },
+    []
+  );
+
+  const memoizedScheduleMonth = useMemo(
+    () => scheduleMonth?.jadwal,
+    [scheduleMonth]
+  );
+
+  const arraySchedule = [
+    scheduleToday?.jadwal?.subuh,
+    scheduleToday?.jadwal?.dzuhur,
+    scheduleToday?.jadwal?.ashar,
+    scheduleToday?.jadwal?.maghrib,
+    scheduleToday?.jadwal?.isya,
+    '17:11',
+  ];
+  useEffect(() => {
+    for (let index = 0; index < arraySchedule.length; index++) {
+      if (arraySchedule[index] === timeWithoutSeconds) {
+        console.log('adzan');
+      }
+    }
+  }, [timeWithoutSeconds]);
 
   return (
     <div>
-      <div className='px-[10%] mt-1 flex justify-between flex-wrap'>
-        <div className='w-1/3 pr-5'>
-          <h4 className='py-3 font-semibold text-md ml-4'>
+      <div className='px-[10%]  pt-5 flex justify-between flex-wrap bg-lightBrown'>
+        <div className='flex items-center justify-center w-full '>
+          <h3 className='mx-4 py-5 w-1/6 md:w-2/12 font-bold text-2xl text-darkBrown text-end'>
+            Kota :
+          </h3>
+          <SelectComp
+            city={selectedCity}
+            listCity={listCity}
+            handleChange={handleChange}
+          />
+        </div>
+        <div className='w-full md:px-[30%]'>
+          <h4 className='py-3 text-center text-3xl text-darkBrown font-extrabold'>
             Jadwal Sholat Hari Ini
           </h4>
 
-          <div className='flex items-center justify-start w-full pl-5'>
-            <h3 className='mx-4 py-5'>Kota :</h3>
-            <SelectComp listCity={listCity} handleChange={handleChange} />
-          </div>
           <div className='overflow-x-auto w-full '>
             <p className='text-center'>{dateNow}</p>
             <p className='text-center'>{time}</p>
@@ -111,12 +165,12 @@ function Jadwal() {
             </table>
           </div>
         </div>
-        <div className='w-2/3'>
+        <div className='w-full'>
           <h2 className='text-center py-3 font-semibold text-md '>
-            Jadwal Solat Untuk {titleCase(scheduleToday?.lokasi)},{' '}
+            Jadwal Solat untuk Daerah {titleCase(scheduleToday?.lokasi)},{' '}
             {titleCase(scheduleToday?.daerah)}
           </h2>
-          <TableSchedule data={scheduleMonth?.jadwal} id='tanggal' />
+          <TableSchedule data={memoizedScheduleMonth} id='tanggal' />
         </div>
       </div>
     </div>
