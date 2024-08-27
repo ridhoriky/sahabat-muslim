@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../services/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import SignInwithGoogle from '../components/SignInwithGoogle';
-
 type FieldType = {
   email?: string;
   password?: string;
@@ -39,6 +38,7 @@ const Login: React.FC = () => {
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (response?.operationType === 'signIn') {
         localStorage.setItem('acsesToken', response?.user?.refreshToken);
+        localStorage.setItem('user', response?.user?.uid);
         localStorage.setItem('isAuth', 'true');
         navigate('/');
         window.location.reload();

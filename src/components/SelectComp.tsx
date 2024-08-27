@@ -18,7 +18,7 @@ const SelectComp = React.memo((props: props) => {
     <select
       id='kota'
       value={city}
-      className='w-2/6 md:w-2/12 border-black/50 rounded-md border-2'
+      className='w-2/6 md:w-1/2 border-black/50 rounded-md border-2'
       onChange={(e) => handleChange(e)}
     >
       {listCity?.map((city: City) => (

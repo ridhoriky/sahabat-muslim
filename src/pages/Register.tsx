@@ -46,6 +46,7 @@ const Register: React.FC = () => {
         await setDoc(doc(db, 'Users', user.uid), {
           email: email,
           photo: '',
+          saveSetting: [],
         });
         navigate('/login');
       }

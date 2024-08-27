@@ -36,6 +36,7 @@ type Schedule = {
 
 function Jadwal() {
   const [listCity, setListCity] = useState([]);
+  const [selectedCity, setSelectedCity] = useState('');
   const [scheduleToday, setScheduleToday] = useState<scheduleToday | null>(
     null
   );
@@ -45,7 +46,6 @@ function Jadwal() {
   });
 
   const [scheduleMonth, setScheduleMonth] = useState<any>(null);
-  const [selectedCity, setSelectedCity] = useState('');
 
   const { dateNow, date, month, year, time, timeWithoutSeconds } = useDate();
   const dispatch = useDispatch();

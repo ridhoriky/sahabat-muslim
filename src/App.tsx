@@ -10,6 +10,7 @@ import store from './store';
 import PublicLayout from './layouts/PublicLayout';
 import PrivateLayout from './layouts/PrivateLayout';
 import AuthLayout from './layouts/AuthLayout';
+import SettingAlarm from './pages/SettingAlarm';
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
               <Route path='jadwal' element={<Jadwal />} />
             </Route>
             <Route element={<PrivateLayout />}>
-              <Route path='/ok' element={<Jadwal />} />
+              <Route path='/setting-alarm' element={<SettingAlarm />} />
             </Route>
             <Route element={<AuthLayout />}>
               <Route path='login' element={<Login />} />

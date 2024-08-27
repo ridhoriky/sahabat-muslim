@@ -1,6 +1,7 @@
 const initialState = {
   authStatus: localStorage.getItem('isAuth'),
   token: localStorage.getItem('refreshToken'),
+  user: localStorage.getItem('user'),
 };
 
 const authReducers = (state = initialState, action: any) => {

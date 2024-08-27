@@ -18,13 +18,14 @@ function SignInwithGoogle(props: props) {
       if (result.user) {
         await setDoc(doc(db, 'Users', user.uid), {
           email: user.email,
-          firstName: user.displayName,
           photo: user.photoURL,
-          lastName: '',
+          saveSetting: {},
         });
         if (result.operationType === 'signIn') {
           localStorage.setItem('acsesToken', result?.user?.refreshToken);
           localStorage.setItem('isAuth', 'true');
+          localStorage.setItem('user', result?.user?.uid);
+
           navigate('/');
           window.location.reload();
         }
