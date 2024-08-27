@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { AiOutlineClose } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { auth } from '../services/firebase';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinks = [
@@ -10,6 +12,22 @@ const Navbar = () => {
     { to: '/jadwal', label: 'Jadwal' },
     { to: '/doa', label: 'Doa' },
   ];
+
+  const navigate = useNavigate();
+  const authStatus = useSelector((state: any) => state.auth.authStatus);
+
+  const handleLogOut = async () => {
+    try {
+      await auth.signOut();
+      localStorage.removeItem('isAuth');
+      localStorage.removeItem('acsesToken');
+      window.location.href = '/login';
+      navigate('/login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+
   return (
     <>
       <header className='px-[10%] py-2 bg-semiBrown'>
@@ -32,20 +50,30 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          <div className='flex gap-2 text-lg leading-normal font-medium  max-lg:hidden wide:mr-24 text-darkBrown'>
-            <Link to='/login'>
-              <button className='btn text-white btn-sm bg-darkBrown hover:bg-darkBrown hover:scale-110'>
-                Masuk
-              </button>
-            </Link>
-            <span>|</span>
-            <Link
-              to='/register'
-              className='text-darkBrown  hover:text-darkBrown hover:border-b-darkBrown hover:border-b-2'
+          {authStatus ? (
+            <button
+              onClick={handleLogOut}
+              className='max-lg:hidden btn btn-sm btn-error text-white'
             >
-              Daftar
-            </Link>
-          </div>
+              Log Out
+            </button>
+          ) : (
+            <div className='flex gap-2 text-lg leading-normal font-medium  max-lg:hidden wide:mr-24 text-darkBrown'>
+              <Link to='/login'>
+                <button className='btn text-white btn-sm bg-darkBrown hover:bg-darkBrown hover:scale-110'>
+                  Masuk
+                </button>
+              </Link>
+              <span>|</span>
+              <Link
+                to='/register'
+                className='text-darkBrown  hover:text-darkBrown hover:border-b-darkBrown hover:border-b-2'
+              >
+                Daftar
+              </Link>
+            </div>
+          )}
+
           <div
             className='max-lg:block cursor-pointer lg:hidden'
             onClick={() => {
@@ -88,20 +116,32 @@ const Navbar = () => {
                     </li>
                   ))}
                 </ul>
-                <div className='mt-2 flex gap-2 text-lg pr-10 leading-normal font-medium justify-start items-start flex-col wide:mr-24 text-darkBrown'>
-                  <Link to='/login' onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                    <button className='btn text-white btn-sm bg-darkBrown hover:bg-darkBrown hover:scale-110'>
-                      Masuk
-                    </button>
-                  </Link>
-                  <Link
-                    onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    to='/register'
-                    className='text-darkBrown  hover:text-darkBrown hover:border-b-darkBrown hover:border-b-2'
+                {authStatus ? (
+                  <button
+                    onClick={handleLogOut}
+                    className='mt-2 btn btn-sm btn-error text-white'
                   >
-                    Daftar
-                  </Link>
-                </div>
+                    Log Out
+                  </button>
+                ) : (
+                  <div className='mt-2 flex gap-2 text-lg pr-10 leading-normal font-medium justify-start items-start flex-col wide:mr-24 text-darkBrown'>
+                    <Link
+                      to='/login'
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    >
+                      <button className='btn text-white btn-sm bg-darkBrown hover:bg-darkBrown hover:scale-110'>
+                        Masuk
+                      </button>
+                    </Link>
+                    <Link
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                      to='/register'
+                      className='text-darkBrown  hover:text-darkBrown hover:border-b-darkBrown hover:border-b-2'
+                    >
+                      Daftar
+                    </Link>
+                  </div>
+                )}
               </div>
             </nav>
           </div>

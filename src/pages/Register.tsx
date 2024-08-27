@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react';
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../services/firebase';
 import { setDoc, doc } from 'firebase/firestore';
@@ -35,6 +35,7 @@ const styleCard: CSSProperties = {
 };
 
 const Register: React.FC = () => {
+  const navigate = useNavigate();
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     const { email = '', password = '' } = values;
 
@@ -46,6 +47,7 @@ const Register: React.FC = () => {
           email: email,
           photo: '',
         });
+        navigate('/login');
       }
     } catch (error) {
       alert('Pendaftaran gagal');
@@ -77,8 +79,7 @@ const Register: React.FC = () => {
         </h2>
 
         <div className='text-center flex flex-col justify-center items-center'>
-          <p>Masuk dengan akun Google</p>
-          <SignInwithGoogle />
+          <SignInwithGoogle text='Daftar' />
         </div>
 
         <Form.Item<FieldType>

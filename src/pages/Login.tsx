@@ -1,9 +1,10 @@
 import React, { CSSProperties } from 'react';
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../services/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import SignInwithGoogle from '../components/SignInwithGoogle';
 
 type FieldType = {
   email?: string;
@@ -31,11 +32,17 @@ const styleCard: CSSProperties = {
 };
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     const { email = '', password = '' } = values;
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response?.user);
+      if (response?.operationType === 'signIn') {
+        localStorage.setItem('acsesToken', response?.user?.refreshToken);
+        localStorage.setItem('isAuth', 'true');
+        navigate('/');
+        window.location.reload();
+      }
     } catch (error) {
       alert('email dan password tidak valid');
     }
@@ -60,11 +67,11 @@ const Login: React.FC = () => {
             color: 'black',
             fontSize: '20px',
             fontWeight: 'bold',
-            paddingBottom: '25px',
           }}
         >
           Login
         </h2>
+        <SignInwithGoogle text='Masuk' />
 
         <Form.Item<FieldType>
           label='Email'
