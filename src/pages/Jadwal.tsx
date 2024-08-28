@@ -10,6 +10,7 @@ import titleCase from '../utils/capitalizeFirstLater';
 import SelectComp from '../components/SelectComp';
 import TableSchedule from '../components/TableSchedule';
 import { setAlarmTime } from '../store/actions/alarmActions';
+import Alarm from './Alarm';
 
 type scheduleToday = {
   id: number;
@@ -46,6 +47,7 @@ function Jadwal() {
   });
 
   const [scheduleMonth, setScheduleMonth] = useState<any>(null);
+  const [isAlarmVisible, setIsAlarmVisible] = useState(false);
 
   const { dateNow, date, month, year, time, timeWithoutSeconds } = useDate();
   const dispatch = useDispatch();
@@ -112,17 +114,31 @@ function Jadwal() {
     ];
     for (let index = 0; index < arraySchedule.length; index++) {
       if (arraySchedule[index] === timeWithoutSeconds) {
-        dispatch(setAlarmTime((arraySchedule[index] = '')));
-        console.log('alarm');
+        dispatch(setAlarmTime(arraySchedule[index]));
+        setIsAlarmVisible(true);
       }
     }
   }, [timeWithoutSeconds, dispatch, scheduleToday]);
 
+  useEffect(() => {
+    if (alarmTime !== '') {
+      const audio = new Audio('/audio/adzan.mp3');
+      audio.play();
+    }
+  }, [alarmTime]);
+
+  const handleAlarmDismiss = () => {
+    setIsAlarmVisible(false);
+    dispatch(setAlarmTime(''));
+  };
   return (
     <div>
-      <div className='px-[10%]  pt-5 flex justify-between flex-wrap bg-lightBrown'>
-        <div className='flex items-center justify-center w-full '>
-          <h3 className='mx-4 py-5 w-1/6 md:w-2/12 font-bold text-2xl text-darkBrown text-end'>
+      {isAlarmVisible && (
+        <Alarm alarmTime={alarmTime} onDismiss={handleAlarmDismiss} />
+      )}{' '}
+      <div className="px-[10%]  pt-5 flex justify-between flex-wrap bg-lightBrown">
+        <div className="flex items-center justify-center w-full ">
+          <h3 className="mx-4 py-5 w-1/6 md:w-2/12 font-bold text-2xl text-darkBrown text-end">
             Kota :
           </h3>
           <SelectComp
@@ -131,59 +147,58 @@ function Jadwal() {
             handleChange={handleChange}
           />
         </div>
-        <div className='w-full md:px-[30%]'>
-          <h4 className='py-3 text-center text-3xl text-darkBrown font-extrabold'>
+        <div className="w-full md:px-[30%]">
+          <h4 className="py-3 text-center text-3xl text-darkBrown font-extrabold">
             Jadwal Sholat Hari Ini
           </h4>
 
-          <div className='overflow-x-auto w-full '>
-            <p className='text-center font-bold'>{dateNow}</p>
-            <p className='text-center font-extrabold text-xl'>{time}</p>
-            <p className='ml-4 text-center my-2 font-bold'>
+          <div className="overflow-x-auto w-full ">
+            <p className="text-center font-bold">{dateNow}</p>
+            <p className="text-center font-extrabold text-xl">{time}</p>
+            <p className="ml-4 text-center my-2 font-bold">
               {titleCase(scheduleToday?.lokasi)},{' '}
               {titleCase(scheduleToday?.daerah)}
             </p>
 
-            <table className='table bg-amber-200 table-sm'>
+            <table className="table bg-amber-200 table-sm">
               <tbody>
                 <tr>
                   <th>Subuh</th>
-                  <td className='font-bold'>{scheduleToday?.jadwal?.subuh}</td>
+                  <td className="font-bold">{scheduleToday?.jadwal?.subuh}</td>
                 </tr>
                 <tr>
                   <th>Dzuhur</th>
-                  <td className='font-bold'>{scheduleToday?.jadwal?.dzuhur}</td>
+                  <td className="font-bold">{scheduleToday?.jadwal?.dzuhur}</td>
                 </tr>
                 <tr>
                   <th>Ashar</th>
-                  <td className='font-bold'>{scheduleToday?.jadwal?.ashar}</td>
+                  <td className="font-bold">{scheduleToday?.jadwal?.ashar}</td>
                 </tr>
                 <tr>
                   <th>Maghrib</th>
-                  <td className='font-bold'>
+                  <td className="font-bold">
                     {scheduleToday?.jadwal?.maghrib}
                   </td>
                 </tr>
                 <tr>
                   <th>Isya</th>
-                  <td className='font-bold'>{scheduleToday?.jadwal?.isya}</td>
+                  <td className="font-bold">{scheduleToday?.jadwal?.isya}</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-        <div className='w-full'>
-          <h2 className='text-center py-3 font-semibold text-md '>
+        <div className="w-full">
+          <h2 className="text-center py-3 font-semibold text-md ">
             Jadwal Solat untuk Daerah {titleCase(scheduleToday?.lokasi)},{' '}
             {titleCase(scheduleToday?.daerah)}
           </h2>
-          <TableSchedule data={memoizedScheduleMonth} id='tanggal' />
+          <TableSchedule data={memoizedScheduleMonth} id="tanggal" />
         </div>
       </div>
-
       <audio
-        src='/audio/adzan.mp3'
-        preload='auto'
+        src="/audio/adzan.mp3"
+        preload="auto"
         autoPlay={alarmTime !== ''}
       />
     </div>
