@@ -111,6 +111,7 @@ function Jadwal() {
       scheduleToday?.jadwal?.ashar,
       scheduleToday?.jadwal?.maghrib,
       scheduleToday?.jadwal?.isya,
+      '07:57',
     ];
     for (let index = 0; index < arraySchedule.length; index++) {
       if (arraySchedule[index] === timeWithoutSeconds) {
