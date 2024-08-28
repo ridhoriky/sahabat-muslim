@@ -79,6 +79,7 @@ const SettingAlarm = () => {
         <div className='w-full mb-3 flex justify-between'>
           <p className='w-1/2'>Pilih Kota</p>
           <SelectComp
+            addedClass='md:w-1/2 w-full'
             city={selectedCity}
             listCity={listCity}
             handleChange={handleChange}

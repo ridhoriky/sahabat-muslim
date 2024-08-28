@@ -11,10 +11,12 @@ import PublicLayout from './layouts/PublicLayout';
 import PrivateLayout from './layouts/PrivateLayout';
 import AuthLayout from './layouts/AuthLayout';
 import SettingAlarm from './pages/SettingAlarm';
+import Alarm from './pages/Alarm';
 
 function App() {
   return (
     <Provider store={store}>
+      <Alarm />
       <BrowserRouter>
         <Routes>
           <Route path='/'>

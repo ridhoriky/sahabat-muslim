@@ -54,7 +54,7 @@ const Navbar = () => {
           </ul>
           <div className='flex gap-2 text-lg leading-normal font-medium  max-lg:hidden wide:mr-24 text-darkBrown'>
             <Link to={'/setting-alarm'}>
-              <BiAlarm size={28} />
+              <BiAlarm className='text-darkBrown' size={28} />
             </Link>
             {authStatus ? (
               <button
