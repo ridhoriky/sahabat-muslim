@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react';
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { auth } from '../services/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import SignInwithGoogle from '../components/SignInwithGoogle';
@@ -31,7 +31,6 @@ const styleCard: CSSProperties = {
 };
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     const { email = '', password = '' } = values;
     try {
@@ -40,8 +39,7 @@ const Login: React.FC = () => {
         localStorage.setItem('acsesToken', response?.user?.refreshToken);
         localStorage.setItem('user', response?.user?.uid);
         localStorage.setItem('isAuth', 'true');
-        navigate('/');
-        window.location.reload();
+        window.location.href = '/';
       }
     } catch (error) {
       alert('email dan password tidak valid');

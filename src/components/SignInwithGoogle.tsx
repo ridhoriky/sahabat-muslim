@@ -40,9 +40,9 @@ function SignInwithGoogle(props: props) {
           localStorage.setItem('acsesToken', result.user.refreshToken);
           localStorage.setItem('isAuth', 'true');
           localStorage.setItem('user', result.user.uid);
+          window.location.reload();
 
           navigate('/');
-          window.location.reload();
         }
       }
     });
@@ -50,9 +50,10 @@ function SignInwithGoogle(props: props) {
   return (
     <div>
       <div
-        className="my-5 flex flex-wrap justify-center cursor-pointer "
-        onClick={googleLogin}>
-        <p className="w-full text-center pb-2">
+        className='my-5 flex flex-wrap justify-center cursor-pointer '
+        onClick={googleLogin}
+      >
+        <p className='w-full text-center pb-2'>
           {props.text} Menggunakan Google
         </p>
         <FaGoogle />

@@ -11,7 +11,7 @@ const Navbar = () => {
     { to: '/', label: 'Beranda' },
     { to: '/quran', label: 'Quran' },
     { to: '/jadwal', label: 'Jadwal' },
-    { to: '/doa', label: 'Doa' },
+    // { to: '/doa', label: 'Doa' },
   ];
 
   const navigate = useNavigate();
@@ -21,8 +21,8 @@ const Navbar = () => {
     try {
       await auth.signOut();
       localStorage.removeItem('isAuth');
-      localStorage.removeItem('acsesToken');
       localStorage.removeItem('user');
+      localStorage.removeItem('saveSetting');
       window.location.href = '/login';
       navigate('/login');
     } catch (error) {
