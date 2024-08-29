@@ -130,9 +130,7 @@ const Alarm: React.FC = () => {
           Matikan Alarm
         </button>
       </div>
-      <track src=''>
-        <audio ref={audioRef} onEnded={handleAudioEnded} preload='auto' />
-      </track>
+      <audio ref={audioRef} onEnded={handleAudioEnded} preload='auto' />
     </div>
   );
 };
