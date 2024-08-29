@@ -12,52 +12,50 @@ import PrivateLayout from './layouts/PrivateLayout';
 import AuthLayout from './layouts/AuthLayout';
 import SettingAlarm from './pages/SettingAlarm';
 import Alarm from './components/Alarm';
+import Doa from './pages/Doa';
+import { ConfigProvider } from 'antd';
 
 function App() {
   return (
-    <Provider store={store}>
-      <Alarm />
-      <BrowserRouter>
-        <Routes>
-          <Route path='/'>
-            <Route element={<PublicLayout />}>
-              <Route index element={<Home />} />
-              <Route path='quran' element={<Outlet />}>
-                <Route index element={<Quran />} />
-                <Route path={':surat'} element={<Ayat />} />
+    <ConfigProvider
+      theme={{
+        token: {
+          // Seed Token
+          colorPrimary: '#CD5C08',
+          borderRadius: 2,
+
+          // Alias Token
+          colorBgContainer: '#fff',
+        },
+      }}
+    >
+      <Provider store={store}>
+        <Alarm />
+        <BrowserRouter>
+          <Routes>
+            <Route path='/'>
+              <Route element={<PublicLayout />}>
+                <Route index element={<Home />} />
+                <Route path='quran' element={<Outlet />}>
+                  <Route index element={<Quran />} />
+                  <Route path={':surat'} element={<Ayat />} />
+                </Route>
+                <Route path='jadwal' element={<Jadwal />} />
+                <Route path='doa' element={<Doa />} />
               </Route>
-              <Route path='jadwal' element={<Jadwal />} />
+              <Route element={<PrivateLayout />}>
+                <Route path='/setting-alarm' element={<SettingAlarm />} />
+              </Route>
+              <Route element={<AuthLayout />}>
+                <Route path='login' element={<Login />} />
+                <Route path='register' element={<Register />} />
+              </Route>
             </Route>
-            <Route element={<PrivateLayout />}>
-              <Route path='/setting-alarm' element={<SettingAlarm />} />
-            </Route>
-            <Route element={<AuthLayout />}>
-              <Route path='login' element={<Login />} />
-              <Route path='register' element={<Register />} />
-            </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </Provider>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </ConfigProvider>
   );
 }
-
-// <Route path='/'>
-//   <Route element={<Public />}>
-//     <Route index element={<Home />} />
-//     <Route path='/parking' element={<Outlet />}>
-//       <Route index element={<ListSlotParking />} />
-//       <Route path=':id' element={<DetailSlotParking />} />
-//     </Route>
-//     <Route path='/daftar-kendaraan' element={<ListVehicle />} />
-//     <Route path='/daftar-kendaraan' element={<ListVehicle />} />
-//     <Route path='/catatan-parkir' element={<ParkingRecords />} />
-//   </Route>
-//   <Route element={<AuthLayout />}>
-//     <Route path='login' element={<Login />} />
-//     <Route path='register' element={<Register />} />
-//   </Route>
-//   <Route path='*' element={<NotFound />} />
-// </Route>;
 
 export default App;

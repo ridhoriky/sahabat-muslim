@@ -49,3 +49,7 @@ export const getSuratWithRange = async (
   );
   return response.data;
 };
+export const getDoaWithSumber = async (value: string) => {
+  const response = await axiosInstance.get(`doa/sumber/${value}`);
+  return response.data;
+};

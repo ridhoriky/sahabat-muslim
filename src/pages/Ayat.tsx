@@ -233,14 +233,12 @@ const Ayat: React.FC = () => {
                 ></div>
                 {menu.display && menu.id === item.id && (
                   <div className='absolute top-3 -right-20 p-2 rounded bg-white shadow-lg z-10'>
-                    <ul>
-                      <li
-                        className='py-1 cursor-pointer'
-                        onClick={() => handlePlayAudio(item.audio)}
-                      >
-                        Play Audio
-                      </li>
-                    </ul>
+                    <p
+                      className='py-1 cursor-pointer'
+                      onClick={() => handlePlayAudio(item.audio)}
+                    >
+                      Play Audio
+                    </p>
                   </div>
                 )}
               </div>

@@ -78,15 +78,15 @@ const SettingAlarm = () => {
   };
 
   return (
-    <div className='pt-20 w-full h-screen flex justify-center bg-lightBrown'>
+    <div className='pt-5 w-full h-screen flex justify-center bg-lightBrown'>
       <form
         action='#'
         onSubmit={(e) => handleSubmit(e)}
         className='flex flex-col md:w-2/3 items-center p-10 h-fit rounded bg-amber-500/5'
       >
-        <h2>Setting Alarm</h2>
-        <div className='w-full mb-3'>
-          <label className='inline-flex w-full items-center justify-between cursor-pointer'>
+        <h2 className='text-xl text-darkBrown font-bold'>Setting Alarm</h2>
+        <div className='w-full my-3'>
+          <label className='inline-flex w-full flex-wrap items-center justify-start cursor-pointer'>
             <span className='text-sm w-1/2 text-black dark:text-gray-300'>
               Alarm Status
             </span>
@@ -99,23 +99,23 @@ const SettingAlarm = () => {
                   alarmStatus: !prevState.alarmStatus,
                 }))
               }
-              className='sr-only peer w-1/2'
+              className='sr-only peer w-1/2 '
             />
             <div className="relative w-11 h-6 bg-gray-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-800 rounded-full peer dark:bg-amber-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-amber-700"></div>
           </label>
         </div>
-        <div className='w-full mb-3 flex justify-between'>
+        <div className='w-full mb-3 flex flex-wrap justify-between'>
           <p className='w-1/2'>Pilih Kota</p>
           <SelectComp
-            addedClass='md:w-1/2 w-full'
+            addedClass='md:w-1/2 w-full '
             city={selectedCity}
             listCity={listCity}
             handleChange={handleChange}
           />
         </div>
-        <div className='w-full flex justify-between'>
-          <p>Pilih Suara Adzan</p>
-          <div className='flex flex-col'>
+        <div className='w-full flex flex-wrap justify-between'>
+          <p className='w-1/2'>Pilih Suara Adzan</p>
+          <div className='flex flex-col items-start md:w-1/2'>
             <div className='flex items-center mb-4'>
               <input
                 checked={saveSetting.adzan === adzanMekkah}
@@ -139,7 +139,7 @@ const SettingAlarm = () => {
                 />
               </label>
             </div>
-            <div className='flex items-center'>
+            <div className='flex items-center mb-4'>
               <input
                 checked={saveSetting.adzan === adzanMadinah}
                 id='adzanMadinah'
@@ -191,7 +191,7 @@ const SettingAlarm = () => {
         <div>
           <button
             type='submit'
-            className='bg-darkBrown hover:bg-darkBrown btn-sm text-white mt-5'
+            className='bg-darkBrown hover:bg-darkBrown btn-md text-white mt-5'
           >
             Simpan
           </button>
