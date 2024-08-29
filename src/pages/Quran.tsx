@@ -3,8 +3,18 @@ import { getAllSurat } from '../services/api';
 import { Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
 
+interface SingleSurat {
+  number: string;
+  name_id: string;
+  number_of_verses: string;
+  revelation_id: string;
+  sequence: string;
+}
+
 const Quran = () => {
-  const [allSurat, setAllSurat] = useState<any>(undefined);
+  const [allSurat, setAllSurat] = useState<SingleSurat[] | undefined>(
+    undefined
+  );
   useEffect(() => {
     getAllSurat().then((res) => setAllSurat(res.data));
   }, []);
@@ -13,7 +23,7 @@ const Quran = () => {
     <div style={{ padding: '0 10%', backgroundColor: '#FFF5D9' }}>
       <div style={{ padding: '40px 15%' }}>
         <Row gutter={16}>
-          {allSurat?.map((surat: any) => (
+          {allSurat?.map((surat: SingleSurat) => (
             <Col span={8} key={surat.number} style={{ marginBottom: '15px' }}>
               <div
                 style={{

@@ -7,33 +7,38 @@ import {
 } from '../services/api';
 import titleCase from '../utils/capitalizeFirstLater';
 import SelectComp from '../components/SelectComp';
-type scheduleToday = {
+interface ScheduleToday {
   id: number;
   lokasi: string;
   daerah: string;
-  jadwal: {
-    tanggal: string;
-    imsak: string;
-    subuh: string;
-    terbit: string;
-    dhuha: string;
-    dzuhur: string;
-    ashar: string;
-    maghrib: string;
-    isya: string;
-    date: string;
-  };
-};
+  jadwal: Jadwal;
+}
+
+interface Jadwal {
+  tanggal: string;
+  imsak: string;
+  subuh: string;
+  terbit: string;
+  dhuha: string;
+  dzuhur: string;
+  ashar: string;
+  maghrib: string;
+  isya: string;
+  date: string;
+}
 
 type Schedule = {
   month: number | undefined;
   year: number | undefined;
 };
+type ScheduleMonth = {
+  jadwal: Jadwal[];
+};
 
 function Jadwal() {
   const [listCity, setListCity] = useState([]);
-  const [selectedCity, setSelectedCity] = useState('');
-  const [scheduleToday, setScheduleToday] = useState<scheduleToday | null>(
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [scheduleToday, setScheduleToday] = useState<ScheduleToday | null>(
     null
   );
   const [schedule] = useState<Schedule>({
@@ -41,7 +46,9 @@ function Jadwal() {
     year: new Date().getFullYear(),
   });
 
-  const [scheduleMonth, setScheduleMonth] = useState<any>(null);
+  const [scheduleMonth, setScheduleMonth] = useState<ScheduleMonth | null>(
+    null
+  );
 
   const { dateNow, date, month, year, time } = useDate();
 
@@ -165,7 +172,7 @@ function Jadwal() {
                 </tr>
               </thead>
               <tbody>
-                {scheduleMonth?.jadwal.map((item: any) => (
+                {scheduleMonth?.jadwal.map((item: Jadwal) => (
                   <tr key={item.tanggal}>
                     <th className='text-start'>{item.tanggal}</th>
                     <td>{item.imsak}</td>

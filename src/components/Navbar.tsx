@@ -5,6 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { auth } from '../services/firebase';
 import { BiAlarm } from 'react-icons/bi';
+import { RootState } from '../store/reducers';
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navLinks = [
@@ -15,7 +17,7 @@ const Navbar = () => {
   ];
 
   const navigate = useNavigate();
-  const { authStatus } = useSelector((state: any) => state.auth);
+  const { authStatus } = useSelector((state: RootState) => state.auth);
 
   const handleLogOut = async () => {
     try {

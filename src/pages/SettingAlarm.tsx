@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { getListCity } from '../services/api';
 import SelectComp from '../components/SelectComp';
-import adzan1 from '../assets/audio/AZAN USTAZ FAHMI maqam nahawand kurdi.mp3';
-import adzan2 from '../assets/audio/Adzan - Muhammad Thaha Al-Junayd.mp3';
-import adzan3 from '../assets/audio/Adzan Bayyati Ust Syamsul Effendi.mp3';
+import adzanMekkah from '../assets/audio/adzan_mekkah.mp3';
+import adzanMadinah from '../assets/audio/adzan_madinah.mp3';
+import adzanTurkey from '../assets/audio/adzan_turkey.mp3';
 import { useSelector } from 'react-redux';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
+import { RootState } from '../store/reducers';
 
 const SettingAlarm = () => {
   const [listCity, setListCity] = useState([]);
@@ -14,10 +15,10 @@ const SettingAlarm = () => {
   const [saveSetting, setSaveSetting] = useState({
     alarmStatus: false,
     kota: '1503',
-    adzan: adzan1,
+    adzan: adzanMekkah,
   });
 
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,56 +118,71 @@ const SettingAlarm = () => {
           <div className='flex flex-col'>
             <div className='flex items-center mb-4'>
               <input
-                checked={saveSetting.adzan === adzan1}
-                id='adzan1'
+                checked={saveSetting.adzan === adzanMekkah}
+                id='adzanMekkah'
                 type='radio'
-                value={adzan1}
+                value={adzanMekkah}
                 name='adzan'
                 className='w-4 h-4 text-amber-600 bg-gray-100 border-gray-300 focus:ring-amber-500 dark:focus:ring-amber-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
                 onChange={handleRadioChange}
               />
               <label
-                htmlFor='adzan1'
+                htmlFor='adzanMekkah'
                 className='ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'
               >
-                Suara Adzan Ustaz Fahmi maqam nahawand kurdi
-                <audio src={adzan1} preload='auto' autoPlay={false} controls />
+                Suara Adzan Mekkah
+                <audio
+                  src={adzanMekkah}
+                  preload='auto'
+                  autoPlay={false}
+                  controls
+                />
               </label>
             </div>
             <div className='flex items-center'>
               <input
-                checked={saveSetting.adzan === adzan2}
-                id='adzan2'
+                checked={saveSetting.adzan === adzanMadinah}
+                id='adzanMadinah'
                 type='radio'
-                value={adzan2}
+                value={adzanMadinah}
                 name='adzan'
                 className='w-4 h-4 text-amber-600 bg-gray-100 border-gray-300 focus:ring-amber-500 dark:focus:ring-amber-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
                 onChange={handleRadioChange}
               />
               <label
-                htmlFor='adzan2'
+                htmlFor='adzanMadinah'
                 className='ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'
               >
-                Suara Adzan Muhammad Thaha Al-Junayd
-                <audio src={adzan2} preload='auto' autoPlay={false} controls />
+                Suara Adzan Madinah
+                <audio
+                  src={adzanMadinah}
+                  preload='auto'
+                  autoPlay={false}
+                  controls
+                />
               </label>
             </div>
             <div className='flex items-center'>
               <input
-                checked={saveSetting.adzan === adzan3}
-                id='adzan3'
+                checked={saveSetting.adzan === adzanTurkey}
+                id='adzanTurkey'
                 type='radio'
-                value={adzan3}
+                value={adzanTurkey}
                 name='adzan'
                 className='w-4 h-4 text-amber-600 bg-gray-100 border-gray-300 focus:ring-amber-500 dark:focus:ring-amber-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
                 onChange={handleRadioChange}
               />
               <label
-                htmlFor='adzan3'
+                htmlFor='adzanTurkey'
                 className='ms-2 text-sm font-medium text-gray-900 dark:text-gray-300'
               >
-                Suara Adzan Bayyati Ust Syamsul Effendi
-                <audio src={adzan2} preload='auto' autoPlay={false} controls />
+                Suara Adzan Turkey
+                <audio
+                  src={adzanTurkey}
+                  preload='auto'
+                  autoPlay={false}
+                  controls
+                />
               </label>
             </div>
           </div>

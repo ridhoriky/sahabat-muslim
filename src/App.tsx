@@ -11,7 +11,7 @@ import PublicLayout from './layouts/PublicLayout';
 import PrivateLayout from './layouts/PrivateLayout';
 import AuthLayout from './layouts/AuthLayout';
 import SettingAlarm from './pages/SettingAlarm';
-import Alarm from './pages/Alarm';
+import Alarm from './components/Alarm';
 
 function App() {
   return (

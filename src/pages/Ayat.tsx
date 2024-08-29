@@ -7,15 +7,38 @@ import {
 } from '../services/api';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
+interface AyatItem {
+  id: number;
+  ayah: number;
+  arab: string;
+  latin: string;
+  text: string;
+  audio: string;
+}
+
+interface SuratState {
+  namaSurat: string;
+  nomorSurat: number;
+  panjangSurat: number;
+  awal: number;
+  akhir: number;
+}
+
+interface SuratData {
+  number: string;
+  name_id: string;
+  number_of_verses: number;
+}
+
 const Ayat: React.FC = () => {
   const [menu, setMenu] = useState<{ display: boolean; id: number | null }>({
     display: false,
     id: null,
   });
-  const [ayat, setAyat] = useState<any[]>([]);
-  const [allSurat, setAllSurat] = useState<any>(undefined);
+  const [ayat, setAyat] = useState<AyatItem[]>([]);
+  const [allSurat, setAllSurat] = useState<SuratData[] | undefined>(undefined);
 
-  const [surat, setSurat] = useState({
+  const [surat, setSurat] = useState<SuratState>({
     namaSurat: '',
     nomorSurat: 1,
     panjangSurat: 7,
@@ -132,14 +155,14 @@ const Ayat: React.FC = () => {
     }
   };
 
-  const handlePlayAudio = (audioUrl: string) => {
-    setAudioSrc(audioUrl);
+  const handlePlayAudio = (audio: string) => {
+    setAudioSrc(audio);
     if (audioRef.current) {
       audioRef.current.play();
     }
   };
 
-  const handleMenuClick = (id: number, audioUrl: string) => {
+  const handleMenuClick = (id: number, audio: string) => {
     if (menu.id === id && menu.display) {
       setMenu({ display: false, id: null });
       if (audioRef.current) {
@@ -148,17 +171,17 @@ const Ayat: React.FC = () => {
       }
     } else {
       setMenu({ display: true, id });
-      handlePlayAudio(audioUrl);
+      handlePlayAudio(audio);
     }
   };
 
   const getSuratName = (number: string) => {
-    const surat = allSurat?.find((s: any) => s.number === `${number}`);
+    const surat = allSurat?.find((s) => s.number === `${number}`);
     return surat ? surat.name_id : '';
   };
 
-  const prevSuratName = getSuratName(`${Number(surat?.nomorSurat) - 1}`);
-  const nextSuratName = getSuratName(`${Number(surat?.nomorSurat) + 1}`);
+  const prevSuratName = getSuratName(`${Number(surat.nomorSurat) - 1}`);
+  const nextSuratName = getSuratName(`${Number(surat.nomorSurat) + 1}`);
 
   return (
     <div className='py-[40px] md:px-[10%] bg-semiBrown min-h-screen'>
@@ -180,7 +203,7 @@ const Ayat: React.FC = () => {
         </button>
       </div>
       <div className='px-[15%]'>
-        {ayat?.map((item: any) => (
+        {ayat.map((item) => (
           <div
             key={item.id}
             className='flex items-center rounded-md my-[10px] px-5 py-1 border-2 border-black/20'
@@ -206,14 +229,14 @@ const Ayat: React.FC = () => {
                       'radial-gradient(circle, black 2px, transparent 2px)',
                     backgroundSize: '100% 33.33%',
                   }}
-                  onClick={() => handleMenuClick(item.id, item.audioUrl)}
+                  onClick={() => handleMenuClick(item.id, item.audio)}
                 ></div>
                 {menu.display && menu.id === item.id && (
-                  <div className='absolute top-3 right-8 p-2 rounded bg-white shadow-lg z-10'>
+                  <div className='absolute top-3 -right-20 p-2 rounded bg-white shadow-lg z-10'>
                     <ul>
                       <li
                         className='py-1 cursor-pointer'
-                        onClick={() => handlePlayAudio(item.audioUrl)}
+                        onClick={() => handlePlayAudio(item.audio)}
                       >
                         Play Audio
                       </li>

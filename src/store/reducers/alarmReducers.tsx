@@ -1,21 +1,20 @@
-import { SET_ALARM_TIME, SET_SUARA_ADZAN } from '../actions/alarmActions';
+import { SET_ALARM_TIME } from '../actions/alarmActions';
 
-const initialState = {
+type AlarmState = {
+  alarmTime: string;
+};
+const alarmState = {
   alarmTime: '',
-  selectedAdzan: '',
 };
 
-const alarmReducer = (state = initialState, action: any) => {
+type Action = { type: string; payload: number };
+
+const alarmReducer = (state: AlarmState = alarmState, action: Action) => {
   switch (action.type) {
     case SET_ALARM_TIME:
       return {
         ...state,
         alarmTime: action.payload,
-      };
-    case SET_SUARA_ADZAN:
-      return {
-        ...state,
-        selectedAdzan: action.payload,
       };
     default:
       return state;

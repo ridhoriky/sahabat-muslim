@@ -1,10 +1,16 @@
-const initialState = {
+interface AuthState {
+  authStatus: string | null;
+  user: string | null;
+}
+
+const authState = {
   authStatus: localStorage.getItem('isAuth'),
-  token: localStorage.getItem('refreshToken'),
   user: localStorage.getItem('user'),
 };
 
-const authReducers = (state = initialState, action: any) => {
+type Action = { type: string; payload: number };
+
+const authReducers = (state: AuthState = authState, action: Action) => {
   switch (action.type) {
     default:
       return state;
