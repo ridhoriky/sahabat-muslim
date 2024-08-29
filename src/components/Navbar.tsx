@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Logo from '../assets/images/islam.png';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { AiOutlineClose } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
@@ -37,8 +38,9 @@ const Navbar = () => {
       <nav className='flex justify-between items-center max-container '>
         <Link
           to='/'
-          className='z-50 text-xl font-bold text-darkBrown hover:text-darkBrown'
+          className='z-50 text-xl flex items-center justify-center gap-2 font-bold text-darkBrown hover:text-darkBrown'
         >
+          <img className='h-8 w-8' src={Logo} alt='logo' />
           Sahabat Muslim
         </Link>
         <ul className='flex-1 flex justify-center items-center gap-8 max-lg:hidden'>
