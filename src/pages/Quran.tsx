@@ -20,60 +20,39 @@ const Quran = () => {
   }, []);
 
   return (
-    <div style={{ padding: '0 10%', backgroundColor: '#FFF5D9' }}>
-      <div style={{ padding: '40px 15%' }}>
+    <div className='px-[10%] bg-[#FFF5D9]'>
+      <div className='py-[20px] md:px-[15%]'>
+        <Link to={'/'}>
+          <div className='w-full bg-gradient-to-br from-amber-600 to-yellow-500 rounded mb-5'>
+            <h2 className='py-5 text-center font-bold text-lg text-white'>
+              Terakhir Dibaca
+            </h2>
+          </div>
+        </Link>
         <Row gutter={16}>
           {allSurat?.map((surat: SingleSurat) => (
-            <Col span={8} key={surat.number} style={{ marginBottom: '15px' }}>
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  padding: '10px',
-                  backgroundColor: '#FFF5E9',
-                  textAlign: 'center',
-                  border: '2px solid grey',
-                  borderRadius: '5px',
-                }}
-              >
-                <Link to={surat.number} style={{ color: 'black' }}>
+            <Col span={8} key={surat.number} className='mb-4'>
+              <div className='w-full h-full p-3 bg-[#FFF5E9] group/item text-center border-2 border-gray-500 hover:border-darkBrown rounded'>
+                <Link
+                  to={surat.number}
+                  className='text-black hover:text-darkBrown'
+                >
                   <Row gutter={16}>
                     <Col span={4}>
-                      <div
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          display: 'flex',
-                          alignItems: 'center',
-
-                          justifyContent: 'start',
-                        }}
-                      >
-                        <div
-                          style={{
-                            border: '1px solid black',
-                            borderRadius: '5px',
-                            padding: '5px 10px',
-                          }}
-                        >
+                      <div className='w-full h-full flex items-center justify-start'>
+                        <div className='border-[1px] group-hover/item:border-darkBrown  border-black rounded px-2 py-1'>
                           {surat.number}
                         </div>
                       </div>
                     </Col>
                     <Col span={20}>
-                      <h4 style={{ fontWeight: 'bold' }}>Qur'an Surat </h4>
-                      <h4
-                        style={{
-                          fontWeight: 'bold',
-                          marginBottom: '10px',
-                        }}
-                      >
-                        {surat.name_id}
-                      </h4>
-                      <p>
-                        {surat.revelation_id} &#8226;{' '}
-                        {`${surat.sequence} Surah`}
-                      </p>
+                      <h4 className='font-bold'>Qur'an Surat </h4>
+                      <h4 className='font-bold mb-2'>{surat.name_id}</h4>
+                      <div className='flex items-center justify-center flex-wrap'>
+                        <span>{surat.revelation_id}</span>
+                        <span className='w-full md:w-fit px-2'>&#8226;</span>
+                        <span> {`${surat.sequence} Surah`}</span>
+                      </div>
                     </Col>
                   </Row>
                 </Link>

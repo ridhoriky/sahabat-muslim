@@ -6,6 +6,7 @@ import {
   getSuratWithRange,
 } from '../services/api';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import SelectSurat from '../components/SelectSurat';
 
 interface AyatItem {
   id: number;
@@ -20,6 +21,7 @@ interface SuratState {
   namaSurat: string;
   nomorSurat: number;
   panjangSurat: number;
+  panjangSuratSebelum: number;
   awal: number;
   akhir: number;
 }
@@ -41,6 +43,7 @@ const Ayat: React.FC = () => {
   const [surat, setSurat] = useState<SuratState>({
     namaSurat: '',
     nomorSurat: 1,
+    panjangSuratSebelum: 10,
     panjangSurat: 7,
     awal: 1,
     akhir: 10,
@@ -53,7 +56,6 @@ const Ayat: React.FC = () => {
   useEffect(() => {
     getAllSurat().then((res) => setAllSurat(res.data));
   }, []);
-
   useEffect(() => {
     const fetchSurat = async () => {
       try {
@@ -70,6 +72,10 @@ const Ayat: React.FC = () => {
     };
 
     fetchSurat();
+    setSurat((state) => ({
+      ...state,
+      panjangSuratSebelum: Number(panjangSurat),
+    }));
   }, [params.surat]);
 
   useEffect(() => {
@@ -135,15 +141,16 @@ const Ayat: React.FC = () => {
       window.scrollTo(0, 0);
     }
   };
-
   const handlePreviousPage = () => {
     if (surat.awal === 1 && Number(surat.nomorSurat) > 1) {
       const newNomorSurat = Number(surat.nomorSurat) - 1;
+      const awalSurat = Math.floor(surat.panjangSuratSebelum / 10) * 10 + 1;
+      const akhirSurat = Math.ceil(surat.panjangSuratSebelum / 10) * 10;
       setSurat((state) => ({
         ...state,
         nomorSurat: newNomorSurat,
-        awal: 1,
-        akhir: 10,
+        awal: awalSurat,
+        akhir: akhirSurat,
       }));
       navigate(`/quran/${newNomorSurat}`);
     } else if (Number(surat.nomorSurat) > 1) {
@@ -154,7 +161,6 @@ const Ayat: React.FC = () => {
       }));
     }
   };
-
   const handlePlayAudio = (audio: string) => {
     setAudioSrc(audio);
     if (audioRef.current) {
@@ -180,11 +186,31 @@ const Ayat: React.FC = () => {
     return surat ? surat.name_id : '';
   };
 
+  const getPanjangSuratSebelum = (number: string) => {
+    const surat = allSurat?.find((s) => s.number === `${number}`);
+    return surat ? surat.number_of_verses : '';
+  };
+
+  const panjangSurat = getPanjangSuratSebelum(
+    `${Number(surat.nomorSurat) - 1}`
+  );
+
+  const handleChangeSurat = (value: string) => {
+    setSurat((state) => ({
+      ...state,
+      awal: 1,
+      akhir: 10,
+    }));
+    navigate(`/quran/${value}`);
+  };
+
   const prevSuratName = getSuratName(`${Number(surat.nomorSurat) - 1}`);
   const nextSuratName = getSuratName(`${Number(surat.nomorSurat) + 1}`);
 
   return (
-    <div className='py-[40px] md:px-[10%] bg-semiBrown min-h-screen'>
+    <div className='py-[20px] md:px-[10%] bg-semiBrown min-h-screen'>
+      <h2 className='text-2xl font-bold text-center mb-5'>{surat.namaSurat}</h2>
+
       <div className='flex px-[15%] justify-between gap-[20px]'>
         <button
           className='bg-[#CD5C08] text-white min-w-[150px] py-[5px] px-[10px]'
@@ -193,7 +219,11 @@ const Ayat: React.FC = () => {
           <LeftOutlined className='mr-[5px]' />
           {prevSuratName || '-'}
         </button>
-        <h2 className='text-2xl font-bold'>{surat.namaSurat}</h2>
+        <SelectSurat
+          handleChangeSurat={handleChangeSurat}
+          allSurat={allSurat}
+          namaSurat={surat.namaSurat}
+        />
         <button
           className='bg-[#CD5C08] text-white min-w-[150px] py-[5px] px-[10px]'
           onClick={handleNextSurat}
@@ -232,13 +262,14 @@ const Ayat: React.FC = () => {
                   onClick={() => handleMenuClick(item.id, item.audio)}
                 ></div>
                 {menu.display && menu.id === item.id && (
-                  <div className='absolute top-3 -right-20 p-2 rounded bg-white shadow-lg z-10'>
+                  <div className='absolute top-3 right-8 md:-right-40 p-2 flex flex-col rounded border border-darkBrown bg-amber-50 shadow-lg z-10'>
                     <p
                       className='py-1 cursor-pointer'
                       onClick={() => handlePlayAudio(item.audio)}
                     >
                       Play Audio
                     </p>
+                    <p>Tandai Terakhir Dibaca</p>
                   </div>
                 )}
               </div>

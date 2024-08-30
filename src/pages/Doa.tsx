@@ -9,17 +9,17 @@ interface Doa {
 }
 
 const Doa: React.FC = () => {
-  const [sumber, setSumber] = useState<string>('quran');
+  const [kategori, setKategori] = useState<string>('quran');
   const [doa, setDoa] = useState<Doa[]>([]);
   const onChange = (e: RadioChangeEvent) => {
-    setSumber(e.target.value);
+    setKategori(e.target.value);
   };
   useEffect(() => {
     const fetchDoa = async () => {
-      await getDoaWithSumber(sumber).then((resp) => setDoa(resp.data));
+      await getDoaWithSumber(kategori).then((resp) => setDoa(resp.data));
     };
     fetchDoa();
-  }, [sumber]);
+  }, [kategori]);
   return (
     <div className='flex flex-col items-center  min-h-screen min-w-full bg-lightBrown px-[10%] '>
       <h2 className='py-5 font-bold text-xl text-darkBrown'>Kategori</h2>

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { getListCity } from '../services/api';
-import SelectComp from '../components/SelectComp';
 import adzanMekkah from '../assets/audio/adzan_mekkah.mp3';
 import adzanMadinah from '../assets/audio/adzan_madinah.mp3';
 import adzanTurkey from '../assets/audio/adzan_turkey.mp3';
@@ -8,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { RootState } from '../store/reducers';
+import SelectCity from '../components/SelectCity';
 
 const SettingAlarm = () => {
   const [listCity, setListCity] = useState([]);
@@ -48,14 +48,11 @@ const SettingAlarm = () => {
     fetchData();
   }, [user]);
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const city = e.target.value;
-      setSelectedCity(city);
-      setSaveSetting((prevState) => ({ ...prevState, kota: city }));
-    },
-    []
-  );
+  const handleChangeCity = useCallback((value: string) => {
+    const city = value;
+    setSelectedCity(city);
+    setSaveSetting((prevState) => ({ ...prevState, kota: city }));
+  }, []);
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const adzanSrc = e.target.value;
@@ -76,6 +73,7 @@ const SettingAlarm = () => {
       }
     }
   };
+  console.log(saveSetting);
 
   return (
     <div className='pt-5 w-full h-screen flex justify-center bg-lightBrown'>
@@ -106,11 +104,16 @@ const SettingAlarm = () => {
         </div>
         <div className='w-full mb-3 flex flex-wrap justify-between'>
           <p className='w-1/2'>Pilih Kota</p>
-          <SelectComp
+          {/* <SelectComp
             addedClass='md:w-1/2 w-full '
             city={selectedCity}
             listCity={listCity}
             handleChange={handleChange}
+          /> */}
+          <SelectCity
+            listCity={listCity}
+            city={selectedCity}
+            handleChangeCity={handleChangeCity}
           />
         </div>
         <div className='w-full flex flex-wrap justify-between'>

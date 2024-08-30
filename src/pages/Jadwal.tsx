@@ -6,7 +6,7 @@ import {
   getScheduleToday,
 } from '../services/api';
 import titleCase from '../utils/capitalizeFirstLater';
-import SelectComp from '../components/SelectComp';
+import SelectCity from '../components/SelectCity';
 interface ScheduleToday {
   id: number;
   lokasi: string;
@@ -91,12 +91,9 @@ function Jadwal() {
     fetchSchedules();
   }, [selectedCity, schedule.month, schedule.year, dateParm]);
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setSelectedCity(e.target.value);
-    },
-    []
-  );
+  const handleChangeCity = useCallback((value: string) => {
+    setSelectedCity(value);
+  }, []);
 
   return (
     <div>
@@ -105,11 +102,11 @@ function Jadwal() {
           <h3 className='mx-4 pt-5 pb-2 font-bold text-2xl text-darkBrown text-end'>
             Kota
           </h3>
-          <SelectComp
-            addedClass='md:w-1/4 w-1/6 mb-5'
+
+          <SelectCity
             city={selectedCity}
             listCity={listCity}
-            handleChange={handleChange}
+            handleChangeCity={handleChangeCity}
           />
         </div>
         <div className='w-full md:px-[25%]'>
@@ -159,7 +156,7 @@ function Jadwal() {
             {titleCase(scheduleToday?.daerah)}
           </h2>
           <div className='overflow-x-auto'>
-            <table className='table table-sm text-center bg-amber-300 font-semibold'>
+            <table className='table table-sm text-center bg-amber-300 font-semibold mb-5'>
               <thead>
                 <tr>
                   <th>Tanggal</th>
