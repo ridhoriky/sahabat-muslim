@@ -3,7 +3,6 @@ import Navbar from '../components/Navbar';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/reducers';
 import Footer from '../components/Footer';
-
 const PrivateLayout = () => {
   const auth = useSelector((state: RootState) => state.auth.authStatus);
 

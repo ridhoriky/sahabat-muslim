@@ -3,11 +3,13 @@ import { getListCity } from '../services/api';
 import adzanMekkah from '../assets/audio/adzan_mekkah.mp3';
 import adzanMadinah from '../assets/audio/adzan_madinah.mp3';
 import adzanTurkey from '../assets/audio/adzan_turkey.mp3';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { doc, updateDoc, getDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { RootState } from '../store/reducers';
 import SelectCity from '../components/SelectCity';
+import { message } from 'antd';
+import { updateSetting } from '../store/actions/alarmActions';
 
 const SettingAlarm = () => {
   const [listCity, setListCity] = useState([]);
@@ -17,8 +19,10 @@ const SettingAlarm = () => {
     kota: '1503',
     adzan: adzanMekkah,
   });
+  const dispatch = useDispatch();
 
   const { user } = useSelector((state: RootState) => state.auth);
+  const { updateAlarm } = useSelector((state: RootState) => state.alarm);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,9 +69,9 @@ const SettingAlarm = () => {
       try {
         const userDocRef = doc(db, 'Users', user);
         await updateDoc(userDocRef, { saveSetting });
-        localStorage.setItem('saveSetting', JSON.stringify(saveSetting));
-        alert('Berhasil menyimpan pengaturan');
-        window.location.reload();
+
+        message.success('Pengaturan alarm berhasil disimpan');
+        dispatch(updateSetting(updateAlarm));
       } catch (error) {
         console.error('Failed to save settings:', error);
       }

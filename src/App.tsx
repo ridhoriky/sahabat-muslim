@@ -13,48 +13,34 @@ import AuthLayout from './layouts/AuthLayout';
 import SettingAlarm from './pages/SettingAlarm';
 import Alarm from './components/Alarm';
 import Doa from './pages/Doa';
-import { ConfigProvider } from 'antd';
 
 function App() {
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          // Seed Token
-          colorPrimary: '#CD5C08',
-          borderRadius: 2,
-
-          // Alias Token
-          colorBgContainer: '#fff',
-        },
-      }}
-    >
-      <Provider store={store}>
-        <Alarm />
-        <BrowserRouter>
-          <Routes>
-            <Route path='/'>
-              <Route element={<PublicLayout />}>
-                <Route index element={<Home />} />
-                <Route path='quran' element={<Outlet />}>
-                  <Route index element={<Quran />} />
-                  <Route path={':surat'} element={<Ayat />} />
-                </Route>
-                <Route path='jadwal' element={<Jadwal />} />
-                <Route path='doa' element={<Doa />} />
+    <Provider store={store}>
+      <Alarm />
+      <BrowserRouter>
+        <Routes>
+          <Route path='/'>
+            <Route element={<PublicLayout />}>
+              <Route index element={<Home />} />
+              <Route path='quran' element={<Outlet />}>
+                <Route index element={<Quran />} />
+                <Route path={':surat'} element={<Ayat />} />
               </Route>
-              <Route element={<PrivateLayout />}>
-                <Route path='/setting-alarm' element={<SettingAlarm />} />
-              </Route>
-              <Route element={<AuthLayout />}>
-                <Route path='login' element={<Login />} />
-                <Route path='register' element={<Register />} />
-              </Route>
+              <Route path='jadwal' element={<Jadwal />} />
+              <Route path='doa' element={<Doa />} />
             </Route>
-          </Routes>
-        </BrowserRouter>
-      </Provider>
-    </ConfigProvider>
+            <Route element={<PrivateLayout />}>
+              <Route path='/setting-alarm' element={<SettingAlarm />} />
+            </Route>
+            <Route element={<AuthLayout />}>
+              <Route path='login' element={<Login />} />
+              <Route path='register' element={<Register />} />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 

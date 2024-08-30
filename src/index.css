@@ -62,3 +62,25 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-radio-button-wrapper:hover {
+  color: #cd5c08 !important;
+}
+
+:where(
+    .css-dev-only-do-not-override-1gwfwyx
+  ).ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+  border-color: #cd5c08 !important;
+  color: #cd5c08 !important;
+}
+label.ant-radio-button-wrapper.ant-radio-button-wrapper-checked.css-dev-only-do-not-override-1gwfwyx::before {
+  background: #cd5c08 !important;
+}
+
+:where(
+    .css-dev-only-do-not-override-1gwfwyx
+  ).ant-radio-button-wrapper-checked:not(
+    .ant-radio-button-wrapper-disabled
+  ):hover {
+  border-color: #cd5c08 !important;
+  color: #cd5c08 !important;
+}

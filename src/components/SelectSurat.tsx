@@ -9,6 +9,7 @@ const SelectSurat = (props: any) => {
   return (
     <Select
       showSearch
+      className='md:min-w-44'
       placeholder='Select a person'
       optionFilterProp='children'
       value={namaSurat}

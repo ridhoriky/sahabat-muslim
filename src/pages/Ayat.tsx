@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/reducers';
 import { db } from '../services/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
+import { message } from 'antd';
 
 interface AyatItem {
   id: number;
@@ -123,12 +124,10 @@ const Ayat: React.FC = () => {
   useEffect(() => {
     const nomorAyat = searchParams.get('nomorAyat');
     if (nomorAyat) {
-      setTimeout(() => {
-        const element = document.getElementById(`ayat-${nomorAyat}`);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 200);
+      const element = document.getElementById(`ayat-${nomorAyat}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   }, [ayat, searchParams]);
 
@@ -265,8 +264,7 @@ const Ayat: React.FC = () => {
         };
         const userDocRef = doc(db, 'Users', user);
         await updateDoc(userDocRef, { markedSurat });
-        alert('Berhasil menandai Surat');
-        window.location.reload();
+        message.success('Berhasil Menandai Ayat');
       } catch (error) {
         console.error('Failed to save settings:', error);
       }
@@ -314,7 +312,7 @@ const Ayat: React.FC = () => {
           >
             <div className='w-[2%] h-full flex items-center justify-center'>
               <p className='border-2 border-black/20 font-bold py-1 px-2'>
-                {Number(item.ayah).toLocaleString('ar-EG')}
+                {item.ayah}
               </p>
             </div>
             <div style={{ width: '98%', height: '100%' }}>

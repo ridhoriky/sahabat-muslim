@@ -1,10 +1,12 @@
-import { SET_ALARM_TIME } from '../actions/alarmActions';
+import { SET_ALARM_TIME, UPDATE_SETTING } from '../actions/alarmActions';
 
 type AlarmState = {
   alarmTime: string;
+  updateAlarm: boolean;
 };
 const alarmState = {
   alarmTime: '',
+  updateAlarm: true,
 };
 
 type Action = { type: string; payload: number };
@@ -15,6 +17,11 @@ const alarmReducer = (state: AlarmState = alarmState, action: Action) => {
       return {
         ...state,
         alarmTime: action.payload,
+      };
+    case UPDATE_SETTING:
+      return {
+        ...state,
+        updateAlarm: !action.payload,
       };
     default:
       return state;

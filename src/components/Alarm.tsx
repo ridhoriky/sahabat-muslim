@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getScheduleToday } from '../services/api';
 import { useDate } from '../utils/useDate';
 import { setAlarmTime } from '../store/actions/alarmActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../services/firebase';
+import { RootState } from '../store/reducers';
 
 interface Schedule {
   subuh: string;
@@ -31,6 +32,7 @@ const Alarm: React.FC = () => {
   const dispatch = useDispatch();
   const { date, month, year, timeWithoutSeconds } = useDate();
   const dateParm = `${year}-${month}-${date}`;
+  const { updateAlarm } = useSelector((state: RootState) => state.alarm);
 
   const fetchUserData = async () => {
     auth.onAuthStateChanged(async (user) => {
@@ -49,7 +51,7 @@ const Alarm: React.FC = () => {
 
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [updateAlarm]);
 
   useEffect(() => {
     const fetchScheduleToday = async () => {
@@ -71,7 +73,6 @@ const Alarm: React.FC = () => {
       scheduleToday?.jadwal?.ashar,
       scheduleToday?.jadwal?.maghrib,
       scheduleToday?.jadwal?.isya,
-      '10:37',
     ];
 
     if (arraySchedule.includes(timeWithoutSeconds) && setting?.alarmStatus) {

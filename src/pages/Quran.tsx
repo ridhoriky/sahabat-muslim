@@ -68,7 +68,7 @@ const Quran = () => {
               <div className='w-full h-full p-3 bg-[#FFF5E9] group/item text-center border-2 border-gray-500 hover:border-darkBrown rounded'>
                 <Link
                   to={surat.number}
-                  className='text-black hover:text-darkBrown'
+                  className='text-black group-hover/item:text-darkBrown'
                 >
                   <Row gutter={16}>
                     <Col span={4}>
