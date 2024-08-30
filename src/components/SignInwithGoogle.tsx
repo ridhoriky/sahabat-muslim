@@ -33,7 +33,7 @@ function SignInwithGoogle(props: props) {
             email: user.email,
             photo: user.photoURL,
             saveSetting: {},
-            markedSurat: {},
+            markedAyat: {},
           });
         }
 

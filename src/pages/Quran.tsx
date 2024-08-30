@@ -32,7 +32,7 @@ const Quran = () => {
         const userDocRef = doc(db, 'Users', user);
         const docSnap = await getDoc(userDocRef);
         if (docSnap.exists()) {
-          const markedFromDb = docSnap.data().markedSurat;
+          const markedFromDb = docSnap.data().markedAyat;
           if (Object.keys(markedFromDb).length > 0) {
             setSavedMarkedSurat(markedFromDb);
           }

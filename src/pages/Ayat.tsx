@@ -258,12 +258,12 @@ const Ayat: React.FC = () => {
   const markSurat = async () => {
     if (user) {
       try {
-        const markedSurat = {
+        const markedAyat = {
           nomorSurat: surat.nomorSurat,
           nomorAyat: surat.nomorAyat,
         };
         const userDocRef = doc(db, 'Users', user);
-        await updateDoc(userDocRef, { markedSurat });
+        await updateDoc(userDocRef, { markedAyat });
         message.success('Berhasil Menandai Ayat');
       } catch (error) {
         console.error('Failed to save settings:', error);

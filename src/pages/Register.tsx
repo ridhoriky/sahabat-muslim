@@ -47,7 +47,7 @@ const Register: React.FC = () => {
           email: email,
           photo: '',
           saveSetting: {},
-          markedSurat: {},
+          markedAyat: {},
         });
         navigate('/login');
       }

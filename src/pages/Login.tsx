@@ -36,7 +36,6 @@ const Login: React.FC = () => {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
       if (response?.operationType === 'signIn') {
-        localStorage.setItem('acsesToken', response?.user?.refreshToken);
         localStorage.setItem('user', response?.user?.uid);
         localStorage.setItem('isAuth', 'true');
         window.location.href = '/';
