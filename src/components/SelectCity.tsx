@@ -1,7 +1,8 @@
 import { Select } from 'antd';
 import titleCase from '../utils/capitalizeFirstLater';
+import React from 'react';
 
-const SelectCity = (props: any) => {
+const SelectCity = React.memo((props: any) => {
   const { listCity, city, handleChangeCity } = props;
   const newArray = listCity?.map((item: any) => ({
     value: item.id,
@@ -24,6 +25,6 @@ const SelectCity = (props: any) => {
       options={newArray}
     />
   );
-};
+});
 
 export default SelectCity;

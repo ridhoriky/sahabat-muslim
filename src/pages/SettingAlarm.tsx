@@ -73,7 +73,6 @@ const SettingAlarm = () => {
       }
     }
   };
-  console.log(saveSetting);
 
   return (
     <div className='pt-5 w-full h-screen flex justify-center bg-lightBrown'>

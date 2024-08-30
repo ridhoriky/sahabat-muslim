@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   getAllSurat,
   getSuratWithNumber,
@@ -7,10 +7,14 @@ import {
 } from '../services/api';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import SelectSurat from '../components/SelectSurat';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/reducers';
+import { db } from '../services/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
 interface AyatItem {
   id: number;
-  ayah: number;
+  ayah: string;
   arab: string;
   latin: string;
   text: string;
@@ -21,6 +25,7 @@ interface SuratState {
   namaSurat: string;
   nomorSurat: number;
   panjangSurat: number;
+  nomorAyat: string;
   panjangSuratSebelum: number;
   awal: number;
   akhir: number;
@@ -39,10 +44,12 @@ const Ayat: React.FC = () => {
   });
   const [ayat, setAyat] = useState<AyatItem[]>([]);
   const [allSurat, setAllSurat] = useState<SuratData[] | undefined>(undefined);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const [surat, setSurat] = useState<SuratState>({
     namaSurat: '',
     nomorSurat: 1,
+    nomorAyat: '',
     panjangSuratSebelum: 10,
     panjangSurat: 7,
     awal: 1,
@@ -51,8 +58,23 @@ const Ayat: React.FC = () => {
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const params = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  useEffect(() => {
+    const nomorAyat = searchParams.get('nomorAyat');
+    if (nomorAyat) {
+      const awalAyat = nomorAyat.includes('0')
+        ? Number(nomorAyat) - 9
+        : Math.floor(Number(nomorAyat) / 10) * 10 + 1;
 
+      const akhirAyat = Math.ceil(Number(nomorAyat) / 10) * 10;
+      setSurat((state) => ({
+        ...state,
+        awal: awalAyat,
+        akhir: akhirAyat,
+      }));
+    }
+  }, [searchParams]);
   useEffect(() => {
     getAllSurat().then((res) => setAllSurat(res.data));
   }, []);
@@ -62,9 +84,9 @@ const Ayat: React.FC = () => {
         const resp = await getSuratWithNumber(params.surat);
         setSurat((state) => ({
           ...state,
-          namaSurat: resp.data.name_id,
-          nomorSurat: resp.data.number,
-          panjangSurat: resp.data.number_of_verses,
+          namaSurat: resp.data?.name_id,
+          nomorSurat: resp.data?.number,
+          panjangSurat: resp.data?.number_of_verses,
         }));
       } catch (error) {
         console.error('Error fetching surat:', error);
@@ -93,9 +115,25 @@ const Ayat: React.FC = () => {
     };
 
     fetchAyat();
+    const nomorAyat = searchParams.get('nomorAyat');
+    if (nomorAyat) {
+      window.scroll(0, 100);
+    }
   }, [surat.awal, surat.akhir, params.surat]);
+  useEffect(() => {
+    const nomorAyat = searchParams.get('nomorAyat');
+    if (nomorAyat) {
+      setTimeout(() => {
+        const element = document.getElementById(`ayat-${nomorAyat}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 200);
+    }
+  }, [ayat, searchParams]);
 
   const handleNextSurat = () => {
+    removeSearchParams();
     if (Number(surat.nomorSurat) < 114) {
       const newNomorSurat = Number(surat.nomorSurat) + 1;
       setSurat((state) => ({
@@ -109,6 +147,7 @@ const Ayat: React.FC = () => {
     }
   };
   const handlePrevSurat = () => {
+    removeSearchParams();
     if (Number(surat.nomorSurat) > 1) {
       const newNomorSurat = Number(surat.nomorSurat) - 1;
       setSurat((state) => ({
@@ -122,6 +161,7 @@ const Ayat: React.FC = () => {
   };
 
   const handleNextPage = () => {
+    removeSearchParams();
     if (surat.panjangSurat < surat.akhir && Number(surat.nomorSurat) < 114) {
       const newNomorSurat = Number(surat.nomorSurat) + 1;
       setSurat((state) => ({
@@ -142,15 +182,16 @@ const Ayat: React.FC = () => {
     }
   };
   const handlePreviousPage = () => {
+    removeSearchParams();
     if (surat.awal === 1 && Number(surat.nomorSurat) > 1) {
       const newNomorSurat = Number(surat.nomorSurat) - 1;
-      const awalSurat = Math.floor(surat.panjangSuratSebelum / 10) * 10 + 1;
-      const akhirSurat = Math.ceil(surat.panjangSuratSebelum / 10) * 10;
+      const awalAyat = Math.floor(surat.panjangSuratSebelum / 10) * 10 + 1;
+      const akhirAyat = Math.ceil(surat.panjangSuratSebelum / 10) * 10;
       setSurat((state) => ({
         ...state,
         nomorSurat: newNomorSurat,
-        awal: awalSurat,
-        akhir: akhirSurat,
+        awal: awalAyat,
+        akhir: akhirAyat,
       }));
       navigate(`/quran/${newNomorSurat}`);
     } else if (Number(surat.nomorSurat) > 1) {
@@ -163,12 +204,23 @@ const Ayat: React.FC = () => {
   };
   const handlePlayAudio = (audio: string) => {
     setAudioSrc(audio);
-    if (audioRef.current) {
-      audioRef.current.play();
-    }
+    setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.src = audio;
+        audioRef.current.pause();
+        audioRef.current.play().catch((error) => {
+          console.error('Error playing audio:', error);
+        });
+      }
+    }, 100);
   };
 
-  const handleMenuClick = (id: number, audio: string) => {
+  const handleMenuClick = (id: number, nomorAyat: string) => {
+    setSurat((state) => ({
+      ...state,
+      nomorAyat,
+    }));
+
     if (menu.id === id && menu.display) {
       setMenu({ display: false, id: null });
       if (audioRef.current) {
@@ -177,7 +229,7 @@ const Ayat: React.FC = () => {
       }
     } else {
       setMenu({ display: true, id });
-      handlePlayAudio(audio);
+      audioRef?.current?.pause();
     }
   };
 
@@ -202,6 +254,27 @@ const Ayat: React.FC = () => {
       akhir: 10,
     }));
     navigate(`/quran/${value}`);
+  };
+
+  const markSurat = async () => {
+    if (user) {
+      try {
+        const markedSurat = {
+          nomorSurat: surat.nomorSurat,
+          nomorAyat: surat.nomorAyat,
+        };
+        const userDocRef = doc(db, 'Users', user);
+        await updateDoc(userDocRef, { markedSurat });
+        alert('Berhasil menandai Surat');
+        window.location.reload();
+      } catch (error) {
+        console.error('Failed to save settings:', error);
+      }
+    }
+  };
+
+  const removeSearchParams = () => {
+    setSearchParams('');
   };
 
   const prevSuratName = getSuratName(`${Number(surat.nomorSurat) - 1}`);
@@ -233,9 +306,10 @@ const Ayat: React.FC = () => {
         </button>
       </div>
       <div className='px-[15%]'>
-        {ayat.map((item) => (
+        {ayat?.map((item) => (
           <div
             key={item.id}
+            id={`ayat-${item.ayah}`}
             className='flex items-center rounded-md my-[10px] px-5 py-1 border-2 border-black/20'
           >
             <div className='w-[2%] h-full flex items-center justify-center'>
@@ -259,17 +333,22 @@ const Ayat: React.FC = () => {
                       'radial-gradient(circle, black 2px, transparent 2px)',
                     backgroundSize: '100% 33.33%',
                   }}
-                  onClick={() => handleMenuClick(item.id, item.audio)}
+                  onClick={() => handleMenuClick(item.id, item.ayah)}
                 ></div>
                 {menu.display && menu.id === item.id && (
                   <div className='absolute top-3 right-8 md:-right-40 p-2 flex flex-col rounded border border-darkBrown bg-amber-50 shadow-lg z-10'>
                     <p
-                      className='py-1 cursor-pointer'
+                      className='cursor-pointer hover:border-b border-darkBrown mb-2'
                       onClick={() => handlePlayAudio(item.audio)}
                     >
                       Play Audio
                     </p>
-                    <p>Tandai Terakhir Dibaca</p>
+                    <p
+                      onClick={() => markSurat()}
+                      className='cursor-pointer hover:border-b border-darkBrown'
+                    >
+                      Tandai Terakhir Dibaca
+                    </p>
                   </div>
                 )}
               </div>

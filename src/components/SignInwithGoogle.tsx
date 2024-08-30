@@ -33,11 +33,11 @@ function SignInwithGoogle(props: props) {
             email: user.email,
             photo: user.photoURL,
             saveSetting: {},
+            markedSurat: {},
           });
         }
 
         if (result.operationType === 'signIn') {
-          localStorage.setItem('acsesToken', result.user.refreshToken);
           localStorage.setItem('isAuth', 'true');
           localStorage.setItem('user', result.user.uid);
           window.location.reload();

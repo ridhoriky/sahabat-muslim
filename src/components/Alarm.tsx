@@ -71,6 +71,7 @@ const Alarm: React.FC = () => {
       scheduleToday?.jadwal?.ashar,
       scheduleToday?.jadwal?.maghrib,
       scheduleToday?.jadwal?.isya,
+      '10:37',
     ];
 
     if (arraySchedule.includes(timeWithoutSeconds) && setting?.alarmStatus) {
