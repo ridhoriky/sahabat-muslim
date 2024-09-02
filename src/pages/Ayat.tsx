@@ -64,9 +64,10 @@ const Ayat: React.FC = () => {
   useEffect(() => {
     const nomorAyat = searchParams.get('nomorAyat');
     if (nomorAyat) {
-      const awalAyat = nomorAyat.includes('0')
-        ? Number(nomorAyat) - 9
-        : Math.floor(Number(nomorAyat) / 10) * 10 + 1;
+      const awalAyat =
+        nomorAyat.slice(-1) === '0'
+          ? Number(nomorAyat) - 9
+          : Math.floor(Number(nomorAyat) / 10) * 10 + 1;
 
       const akhirAyat = Math.ceil(Number(nomorAyat) / 10) * 10;
       setSurat((state) => ({
